@@ -2,6 +2,10 @@ import pymem
 import subprocess
 import pwn
 
+# XOR decoder
+# Returns:
+# -output: a list of XORed characters in 
+# ASCII representation
 def xorDecrypt(key, file):
     output = []
     for byte in file:
@@ -9,16 +13,22 @@ def xorDecrypt(key, file):
         output.append(outbyte.decode('latin-1'))
     return output
 
-def processInjection(process):
+# Create a python-injected Pymem instance 
+# Parameter:
+# -process: the name of the process in memory
+# Returns:
+# -mem: A Pymem representation of the process in memory
     mem = pymem.Pymem(process)
     mem.inject_python_interpreter()
     return mem
 
-#code = """
-#print("Hello Injection!")
-#"""
-#mem.inject_python_shellcode(code)
-
+# Grabbing bytes from the executable memory area
+# Parameters: 
+# -mem: The Pymem instance that's working with the process target
+# -address_list: A list of address offsets in HEX
+# Returns:
+# - A list of values that reside within the proximity of
+# the offset locations
 def getBytes(mem,address_list):
     #address_list = [0x401577,0x40157b,0x40157f,0x401583,0x401587,0x40158b,0x40158f]
     arr = []
